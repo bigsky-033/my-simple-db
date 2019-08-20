@@ -39,6 +39,9 @@ class App {
             } catch (ex: IllegalArgumentException) {
                 println("Your input is not valid. Please check your input again.")
                 println("- Details: ${ex.message}")
+            } catch (ex: IllegalStateException) {
+                println("Currently database is not valid status.")
+                println("- Details: ${ex.message}")
             }
         }
     }

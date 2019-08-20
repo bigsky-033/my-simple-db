@@ -9,7 +9,7 @@ class SimpleListBasedStorage(
 ) : Storage {
 
     override fun addRow(row: Row) {
-        if (this.rows.count() > maxRows) {
+        if (this.rows.count() >= maxRows) {
             throw IllegalStateException("Storage reaches limit(current max: $maxRows). So cannot add $row to storage.")
         }
         this.rows.add(row)

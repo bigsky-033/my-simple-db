@@ -1,3 +1,3 @@
 package kr.bigsky033.study.mysimpledb.statement
 
-class InsertStatement(type: StatementType, val content: String) : Statement(type)
+class InsertStatement(val content: String) : Statement(StatementType.INSERT)
