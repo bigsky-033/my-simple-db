@@ -18,9 +18,14 @@ application {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation("org.junit.jupiter:junit-jupiter:5.5.1")
 }
 
 tasks {
+
+    named<Test>("test") {
+        useJUnitPlatform()
+    }
 
     withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "12"
@@ -35,4 +40,3 @@ tasks {
     }
 
 }
-

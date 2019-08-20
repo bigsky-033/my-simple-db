@@ -34,8 +34,6 @@ class App {
             }
 
             try {
-
-
                 val statement = Statement.prepareStatement(line)
                 if (statement.type == StatementType.UNKNOWN) {
                     println("$line is unknown statement type")
