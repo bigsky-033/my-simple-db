@@ -3,7 +3,6 @@ package kr.bigsky033.study.mysimpledb.statement
 import kr.bigsky033.study.mysimpledb.entity.Row
 import kr.bigsky033.study.mysimpledb.storage.Storage
 
-
 class InsertStatementExecutor : StatementExecutor {
 
     override fun execute(statement: Statement, storage: Storage) {

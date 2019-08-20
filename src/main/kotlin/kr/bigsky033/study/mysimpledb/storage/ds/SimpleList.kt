@@ -1,6 +1,5 @@
 package kr.bigsky033.study.mysimpledb.storage.ds
 
-
 interface SimpleList<T> {
 
     fun first(): Node<T>?

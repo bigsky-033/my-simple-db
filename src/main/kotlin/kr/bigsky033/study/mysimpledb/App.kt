@@ -4,17 +4,13 @@ import kr.bigsky033.study.mysimpledb.meta.MetaCommand
 import kr.bigsky033.study.mysimpledb.statement.Statement
 import kr.bigsky033.study.mysimpledb.statement.StatementType
 
-
 class App {
 
-    private lateinit var database: Database
+    private val database: Database
 
     init {
-        initApp()
-    }
-
-    private fun initApp() {
-        this.database = MySimpleDatabase()
+        val initializer = ApplicationInitializer()
+        database = initializer.initializeDatabase()
     }
 
     fun run() {
@@ -39,7 +35,7 @@ class App {
                     println("$line is unknown statement type")
                     continue
                 }
-                this.database.execute(statement)
+                database.execute(statement)
             } catch (ex: IllegalArgumentException) {
                 println("Your input is not valid. Please check your input again.")
                 println("- Details: ${ex.message}")

@@ -2,7 +2,6 @@ package kr.bigsky033.study.mysimpledb.meta
 
 import kotlin.system.exitProcess
 
-
 enum class MetaCommand(val value: String) {
 
     EXIT(".exit") {

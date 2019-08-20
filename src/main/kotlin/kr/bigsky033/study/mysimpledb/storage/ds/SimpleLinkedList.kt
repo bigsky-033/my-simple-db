@@ -1,6 +1,5 @@
 package kr.bigsky033.study.mysimpledb.storage.ds
 
-
 class SimpleLinkedList<T> : SimpleList<T> {
 
     private var head: Node<T>? = null

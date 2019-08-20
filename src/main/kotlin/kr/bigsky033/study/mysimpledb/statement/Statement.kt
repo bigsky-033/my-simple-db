@@ -1,6 +1,5 @@
 package kr.bigsky033.study.mysimpledb.statement
 
-
 open class Statement(val type: StatementType) {
 
     companion object {
