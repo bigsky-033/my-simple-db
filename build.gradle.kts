@@ -2,10 +2,12 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.3.41"
+    id("kotlinx-serialization") version "1.3.41"
     application
 }
 
 repositories {
+    jcenter()
     mavenCentral()
 }
 
@@ -18,6 +20,9 @@ application {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation(kotlin("gradle-plugin"))
+    implementation(kotlin("serialization"))
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.11.1")
     implementation("org.junit.jupiter:junit-jupiter:5.5.1")
 }
 
