@@ -1,9 +1,9 @@
 package kr.bigsky033.study.mysimpledb.statement
 
-import kr.bigsky033.study.mysimpledb.storage.Storage
+import kr.bigsky033.study.mysimpledb.Table
 
-interface StatementExecutor {
+interface StatementExecutor<T> {
 
-    fun execute(statement: Statement, storage: Storage)
+    fun execute(statement: Statement, table: Table<T>)
 
 }

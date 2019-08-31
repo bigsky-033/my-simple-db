@@ -1,20 +1,19 @@
 package kr.bigsky033.study.mysimpledb
 
+import kr.bigsky033.study.mysimpledb.entity.Row
 import kr.bigsky033.study.mysimpledb.statement.Statement
 import kr.bigsky033.study.mysimpledb.statement.StatementExecutor
 import kr.bigsky033.study.mysimpledb.statement.StatementType
-import kr.bigsky033.study.mysimpledb.storage.Storage
-
 
 class MySimpleDatabase(
-    private val storage: Storage,
-    private val insertStatementExecutor: StatementExecutor,
-    private val selectStatementExecutor: StatementExecutor
+    private val table: Table<Row>,
+    private val insertStatementExecutor: StatementExecutor<Row>,
+    private val selectStatementExecutor: StatementExecutor<Row>
 ) : Database {
 
     override fun execute(statement: Statement) {
         val statementExecutor = selectStatementExecutor(statement.type)
-        statementExecutor.execute(statement, storage)
+        statementExecutor.execute(statement, table)
         println("Executed")
     }
 

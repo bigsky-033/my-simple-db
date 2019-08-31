@@ -1,13 +1,16 @@
 package kr.bigsky033.study.mysimpledb.statement
 
 import kr.bigsky033.study.mysimpledb.entity.Row
-import kr.bigsky033.study.mysimpledb.storage.SimpleListBasedStorage
-import kr.bigsky033.study.mysimpledb.storage.Storage
+import kr.bigsky033.study.mysimpledb.SimpleTableForRow
+import kr.bigsky033.study.mysimpledb.Table
+import kr.bigsky033.study.mysimpledb.storage.ListBasedCache
+import kr.bigsky033.study.mysimpledb.storage.SimpleDiskForRow
 import kr.bigsky033.study.mysimpledb.storage.ds.SimpleLinkedList
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.PrintStream
 
 class SelectStatementExecutorTest {
@@ -16,18 +19,28 @@ class SelectStatementExecutorTest {
 
     private val originalOut = System.out
 
-    private lateinit var storage: Storage
+    private lateinit var table: Table<Row>
+
+    private val filename = "test.db"
 
     @BeforeEach
     fun setup() {
+        // set for output stream
         System.setOut(PrintStream(outContent))
 
+        val file = File(filename)
+        if (file.exists()) file.delete()
+
+        val disk = SimpleDiskForRow(filename = filename)
+        disk.init()
         val simpleLinkedList = SimpleLinkedList<Row>()
-        storage = SimpleListBasedStorage(rows = simpleLinkedList, maxRows = 10)
+        val cache = ListBasedCache(rows = simpleLinkedList, maxCacheSize = 10)
+        table = SimpleTableForRow(cache = cache, disk = disk, maxDataSize = 100)
     }
 
     @AfterEach
     fun cleanup() {
+        // set for output stream
         System.setOut(originalOut)
     }
 
@@ -36,7 +49,7 @@ class SelectStatementExecutorTest {
         val statement = SelectStatement()
         val selectStatementExecutor = SelectStatementExecutor()
 
-        selectStatementExecutor.execute(statement, storage)
+        selectStatementExecutor.execute(statement, table)
 
         val output = outContent.toString(Charsets.UTF_8).trim()
         assertEquals("Empty", output)
@@ -48,12 +61,12 @@ class SelectStatementExecutorTest {
         val username = "bisky033"
         val email = "hello@email.com"
         val row = Row(id = id, username = username, email = email)
-        storage.addRow(row)
+        table.insert(row)
 
         val statement = SelectStatement()
         val selectStatementExecutor = SelectStatementExecutor()
 
-        selectStatementExecutor.execute(statement, storage)
+        selectStatementExecutor.execute(statement, table)
 
         val output = outContent.toString(Charsets.UTF_8).trim()
         assertAll("output should contains",
@@ -68,7 +81,7 @@ class SelectStatementExecutorTest {
         val statement = InsertStatement("hello")
         val selectStatementExecutor = SelectStatementExecutor()
         assertThrows<IllegalArgumentException> {
-            selectStatementExecutor.execute(statement, storage)
+            selectStatementExecutor.execute(statement, table)
         }
     }
 

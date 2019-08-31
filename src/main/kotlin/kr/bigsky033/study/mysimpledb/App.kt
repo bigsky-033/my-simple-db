@@ -9,8 +9,11 @@ class App {
     private val database: Database
 
     init {
-        val initializer = ApplicationInitializer()
-        database = initializer.initializeDatabase()
+        val context = ApplicationContext()
+        database = context.initialize()
+        Runtime.getRuntime().addShutdownHook(Thread {
+            context.terminate()
+        })
     }
 
     fun run() {

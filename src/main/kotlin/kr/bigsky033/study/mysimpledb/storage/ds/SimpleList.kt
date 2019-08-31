@@ -1,6 +1,6 @@
 package kr.bigsky033.study.mysimpledb.storage.ds
 
-interface SimpleList<T> {
+interface SimpleList<T> : Iterable<T> {
 
     fun first(): Node<T>?
 
@@ -8,9 +8,9 @@ interface SimpleList<T> {
 
     fun isEmpty(): Boolean
 
-    fun count(): Int
+    fun size(): Int
 
-    fun get(index: Int): Node<T>?
+    fun get(index: Int): T?
 
     fun add(value: T)
 
@@ -22,5 +22,3 @@ data class Node<T>(
     var value: T,
     var next: Node<T>? = null
 )
-
-

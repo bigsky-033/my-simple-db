@@ -3,10 +3,12 @@ package kr.bigsky033.study.mysimpledb.storage
 import kr.bigsky033.study.mysimpledb.entity.Row
 import kr.bigsky033.study.mysimpledb.storage.ds.SimpleList
 
-interface Storage {
+interface Cache<K, V> {
 
-    fun addRow(row: Row)
+    fun add(key: K, value: V): K
 
-    fun getRows(): SimpleList<Row>
+    fun get(id: K): Row?
+
+    fun getAsList(): SimpleList<V>
 
 }

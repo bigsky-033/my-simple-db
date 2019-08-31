@@ -1,8 +1,10 @@
 package kr.bigsky033.study.mysimpledb.statement
 
 import kr.bigsky033.study.mysimpledb.entity.Row
-import kr.bigsky033.study.mysimpledb.storage.SimpleListBasedStorage
-import kr.bigsky033.study.mysimpledb.storage.Storage
+import kr.bigsky033.study.mysimpledb.SimpleTableForRow
+import kr.bigsky033.study.mysimpledb.Table
+import kr.bigsky033.study.mysimpledb.storage.ListBasedCache
+import kr.bigsky033.study.mysimpledb.storage.SimpleDiskForRow
 import kr.bigsky033.study.mysimpledb.storage.ds.SimpleLinkedList
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -10,15 +12,24 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import org.junit.jupiter.api.assertThrows
+import java.io.File
 
 class InsertStatementExecutorTest {
 
-    private lateinit var storage: Storage
+    private lateinit var table: Table<Row>
+
+    private val filename = "test.db"
 
     @BeforeEach
     fun setup() {
+        val file = File(filename)
+        if (file.exists()) file.delete()
+
+        val disk = SimpleDiskForRow(filename = filename)
+        disk.init()
         val simpleLinkedList = SimpleLinkedList<Row>()
-        storage = SimpleListBasedStorage(simpleLinkedList, 10)
+        val cache = ListBasedCache(rows = simpleLinkedList, maxCacheSize = 10)
+        table = SimpleTableForRow(cache = cache, disk = disk, maxDataSize = 100)
     }
 
     @Test
@@ -28,13 +39,13 @@ class InsertStatementExecutorTest {
         val email = "hello@email.com"
         val statement = InsertStatement("$id $username $email")
         val insertStatementExecutor = InsertStatementExecutor()
-        insertStatementExecutor.execute(statement, storage)
+        insertStatementExecutor.execute(statement, table)
 
-        val rows = storage.getRows()
+        val rows = table.selectAll()
         assertEquals(1, rows.count())
         assertNotNull(rows.get(0))
 
-        val row = rows.get(0)!!.value
+        val row = rows.get(0)!!
         assertAll("row properties",
             { assertEquals(id, row.id) },
             { assertEquals(username, row.username) },
@@ -47,7 +58,7 @@ class InsertStatementExecutorTest {
         val statement = SelectStatement()
         val insertStatementExecutor = InsertStatementExecutor()
         assertThrows<IllegalArgumentException> {
-            insertStatementExecutor.execute(statement, storage)
+            insertStatementExecutor.execute(statement, table)
         }
     }
 
@@ -56,7 +67,7 @@ class InsertStatementExecutorTest {
         val statement = InsertStatement("I'm not valid insert statement's content")
         val insertStatementExecutor = InsertStatementExecutor()
         assertThrows<IllegalArgumentException> {
-            insertStatementExecutor.execute(statement, storage)
+            insertStatementExecutor.execute(statement, table)
         }
     }
 
@@ -103,7 +114,7 @@ class InsertStatementExecutorTest {
     ) {
         val statement = InsertStatement("$id $username $email")
         val insertStatementExecutor = InsertStatementExecutor()
-        insertStatementExecutor.execute(statement, storage)
+        insertStatementExecutor.execute(statement, table)
     }
 
 }
