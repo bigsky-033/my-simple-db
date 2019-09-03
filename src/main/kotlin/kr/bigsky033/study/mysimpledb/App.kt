@@ -1,8 +1,6 @@
 package kr.bigsky033.study.mysimpledb
 
 import kr.bigsky033.study.mysimpledb.meta.MetaCommand
-import kr.bigsky033.study.mysimpledb.statement.Statement
-import kr.bigsky033.study.mysimpledb.statement.StatementType
 
 class App {
 
@@ -33,12 +31,7 @@ class App {
             }
 
             try {
-                val statement = Statement.prepareStatement(line)
-                if (statement.type == StatementType.UNKNOWN) {
-                    println("$line is unknown statement type")
-                    continue
-                }
-                database.execute(statement)
+                database.execute(line)
             } catch (ex: IllegalArgumentException) {
                 println("Your input is not valid. Please check your input again.")
                 println("- Details: ${ex.message}")

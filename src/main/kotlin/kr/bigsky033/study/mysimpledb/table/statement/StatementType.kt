@@ -1,4 +1,4 @@
-package kr.bigsky033.study.mysimpledb.statement
+package kr.bigsky033.study.mysimpledb.table.statement
 
 enum class StatementType {
 

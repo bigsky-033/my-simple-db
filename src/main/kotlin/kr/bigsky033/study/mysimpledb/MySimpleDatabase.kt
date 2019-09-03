@@ -1,26 +1,22 @@
 package kr.bigsky033.study.mysimpledb
 
 import kr.bigsky033.study.mysimpledb.entity.Row
-import kr.bigsky033.study.mysimpledb.statement.Statement
-import kr.bigsky033.study.mysimpledb.statement.StatementExecutor
-import kr.bigsky033.study.mysimpledb.statement.StatementType
+import kr.bigsky033.study.mysimpledb.table.Table
+import kr.bigsky033.study.mysimpledb.table.statement.Statement
+import kr.bigsky033.study.mysimpledb.table.statement.StatementType
 
 class MySimpleDatabase(
-    private val table: Table<Row>,
-    private val insertStatementExecutor: StatementExecutor<Row>,
-    private val selectStatementExecutor: StatementExecutor<Row>
+    private val table: Table<Row>
 ) : Database {
 
-    override fun execute(statement: Statement) {
-        val statementExecutor = selectStatementExecutor(statement.type)
-        statementExecutor.execute(statement, table)
+    override fun execute(line: String) {
+        val statement = Statement.prepareStatement(line)
+        if (statement.type == StatementType.UNKNOWN) {
+            println("$line is unknown statement type")
+            return
+        }
+        table.execute(statement)
         println("Executed")
-    }
-
-    private fun selectStatementExecutor(type: StatementType) = when (type) {
-        StatementType.INSERT -> insertStatementExecutor
-        StatementType.SELECT -> selectStatementExecutor
-        else -> throw IllegalArgumentException("Input statement is not valid")
     }
 
 }

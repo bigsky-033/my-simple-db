@@ -4,7 +4,7 @@ import kr.bigsky033.study.mysimpledb.entity.Row
 import kr.bigsky033.study.mysimpledb.validation.validateForRow
 
 fun String.toRow(delimiter: String): Row {
-    val tokens = split(delimiter)
+    val tokens = this.trim().split(delimiter)
     if (tokens.size != 3) {
         throw IllegalArgumentException("")
     }

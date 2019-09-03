@@ -21,7 +21,6 @@ application {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(kotlin("gradle-plugin"))
-    implementation(kotlin("serialization"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.11.1")
     implementation("org.junit.jupiter:junit-jupiter:5.5.1")
 }

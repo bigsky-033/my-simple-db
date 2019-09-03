@@ -1,13 +1,9 @@
 package kr.bigsky033.study.mysimpledb
 
 import kr.bigsky033.study.mysimpledb.entity.Row
-import kr.bigsky033.study.mysimpledb.statement.InsertStatementExecutor
-import kr.bigsky033.study.mysimpledb.statement.SelectStatementExecutor
-import kr.bigsky033.study.mysimpledb.storage.Cache
-import kr.bigsky033.study.mysimpledb.storage.Disk
-import kr.bigsky033.study.mysimpledb.storage.ListBasedCache
-import kr.bigsky033.study.mysimpledb.storage.SimpleDiskForRow
-import kr.bigsky033.study.mysimpledb.storage.ds.SimpleLinkedList
+import kr.bigsky033.study.mysimpledb.storage.*
+import kr.bigsky033.study.mysimpledb.table.SimpleTableForRow
+import kr.bigsky033.study.mysimpledb.table.Table
 
 class ApplicationContext {
 
@@ -27,24 +23,18 @@ class ApplicationContext {
         disk = SimpleDiskForRow(filename = filename)
         disk.init()
 
-        val simpleLinkedList = SimpleLinkedList<Row>()
-        cache = ListBasedCache(rows = simpleLinkedList, maxCacheSize = maxCacheSize)
+        cache = SimpleCacheForRow()
 
-        table = SimpleTableForRow(cache = cache, disk = disk, maxDataSize = maxDataSize)
+        val storage = SimpleStorageForRow(cache = cache, disk = disk)
 
-        val insertStatementExecutor = InsertStatementExecutor()
-        val selectStatementExecutor = SelectStatementExecutor()
+        table = SimpleTableForRow(storage = storage, maxDataSize = maxDataSize)
 
-        database = MySimpleDatabase(
-            table = table,
-            insertStatementExecutor = insertStatementExecutor,
-            selectStatementExecutor = selectStatementExecutor
-        )
+        database = MySimpleDatabase(table = table)
         return database
     }
 
     fun terminate() {
-        disk.cleanup()
+        disk.terminate()
     }
 
 }

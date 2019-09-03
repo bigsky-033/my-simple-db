@@ -1,16 +1,12 @@
 package kr.bigsky033.study.mysimpledb.storage
 
-interface Disk<T> {
+import kr.bigsky033.study.mysimpledb.entity.Row
 
-    fun init()
-
-    fun clear()
-
-    fun terminate()
+interface Storage<T> {
 
     fun write(data: T, offset: Int)
 
-    fun read(offset: Int): T?
+    fun read(offset: Int): Row?
 
     fun currentSize(): Int
 
