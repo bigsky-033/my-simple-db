@@ -2,11 +2,23 @@ package kr.bigsky033.study.mysimpledb.storage
 
 const val VALID_BYTE_SIZE = 1
 
-const val DATA_CONTENT_LENGTH_BYTE_SIZE = 4
-
-const val DATA_MAX_LENGTH_BYTE_SIZE = 300
-
 const val VALID = 1.toByte()
 
 const val INVALID = 0.toByte()
+
+const val ID_BYTE_SIZE = Int.SIZE_BYTES
+
+const val CHILD_NODE_START_OFFSET_SIZE = Long.SIZE_BYTES
+
+const val NODE_NUMBER_SIZE = Int.SIZE_BYTES
+
+const val DATA_CONTENT_LENGTH_BYTE_SIZE = Int.SIZE_BYTES
+
+const val NODE_HEADER_SIZE =
+    VALID_BYTE_SIZE + ID_BYTE_SIZE + (CHILD_NODE_START_OFFSET_SIZE * 2) + NODE_NUMBER_SIZE + DATA_CONTENT_LENGTH_BYTE_SIZE
+
+const val NODE_DATA_SIZE = 300
+
+const val NODE_SIZE = NODE_HEADER_SIZE + NODE_DATA_SIZE
+
 

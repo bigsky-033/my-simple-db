@@ -2,7 +2,7 @@ package kr.bigsky033.study.mysimpledb.table
 
 interface Cursor<T> {
 
-    fun get(): T?
+    fun get(id: Int): T?
 
     fun next(): T?
 

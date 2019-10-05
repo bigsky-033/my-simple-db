@@ -4,9 +4,11 @@ import kr.bigsky033.study.mysimpledb.entity.Row
 
 interface Storage<T> {
 
-    fun write(data: T, offset: Int)
+    fun write(data: T)
 
-    fun read(offset: Int): Row?
+    fun read(id: Int): Row?
+
+    fun readSequentially(sequence: Int): Row?
 
     fun currentSize(): Int
 

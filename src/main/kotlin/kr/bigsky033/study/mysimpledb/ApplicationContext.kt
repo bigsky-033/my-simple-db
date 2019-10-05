@@ -20,7 +20,7 @@ class ApplicationContext {
         maxCacheSize: Int = 100,
         maxDataSize: Int = 1000
     ): Database {
-        disk = SimpleDiskForRow(filename = filename)
+        disk = BSTDiskForRow(filename = filename)
         disk.init()
 
         cache = SimpleCacheForRow()

@@ -10,14 +10,14 @@ class SimpleCursorForRow(
 
     private var current: Row? = null
 
-    override fun get(): Row? {
-        return current
+    override fun get(id: Int): Row? {
+        return storage.read(id)
     }
 
     override fun next(): Row? {
         return if (hasNext()) {
+            current = storage.readSequentially(currentPosition)
             currentPosition += 1
-            current = storage.read(currentPosition)
             return current
         } else {
             null
@@ -25,13 +25,13 @@ class SimpleCursorForRow(
     }
 
     override fun hasNext(): Boolean {
-        return storage.read(currentPosition + 1) != null
+        return storage.readSequentially(currentPosition) != null
     }
 
     override fun add(data: Row) {
         // before write data, move cursor to according position
         currentPosition = data.id
-        storage.write(data = data, offset = data.id)
+        storage.write(data = data)
     }
 
 }

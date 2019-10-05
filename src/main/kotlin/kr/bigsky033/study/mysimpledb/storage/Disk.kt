@@ -8,9 +8,11 @@ interface Disk<T> {
 
     fun terminate()
 
-    fun write(data: T, offset: Int)
+    fun write(data: T)
 
-    fun read(offset: Int): T?
+    fun read(id: Int): T?
+
+    fun readSequentially(sequence: Int): T?
 
     fun currentSize(): Int
 

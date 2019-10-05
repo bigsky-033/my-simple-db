@@ -12,7 +12,7 @@ import java.io.File
 
 class DiskTest {
 
-    private val disk: Disk<Row> = SimpleDiskForRow(tempDbFileName)
+    private val disk: Disk<Row> = BSTDiskForRow(tempDbFileName)
 
     @BeforeEach
     fun setup() {
@@ -41,7 +41,7 @@ class DiskTest {
         val username = "sampleUser"
         val email = "my.email@email.com"
         val row = Row(id = id, username = username, email = email)
-        disk.write(row, row.id)
+        disk.write(row)
 
         val read = disk.read(id)
         assertEquals(row, read)
@@ -51,7 +51,7 @@ class DiskTest {
     fun `read and write many rows`() {
         for (i in 5..100) {
             val row = Row(id = i, username = "user$i", email = "user$i@email.com")
-            disk.write(row, row.id)
+            disk.write(row)
         }
 
         for (i in 5..100) {
@@ -73,7 +73,7 @@ class DiskTest {
         var counter = 0
         for (i in 5..100) {
             val row = Row(id = i, username = "user$i", email = "user$i@email.com")
-            disk.write(row, row.id)
+            disk.write(row)
             counter++
         }
 

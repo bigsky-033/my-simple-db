@@ -8,12 +8,16 @@ class SimpleStorageForRow(
     private val disk: Disk<Row>
 ) : Storage<Row> {
 
-    override fun write(data: Row, offset: Int) {
-        disk.write(data, offset)
+    override fun write(data: Row) {
+        disk.write(data)
     }
 
-    override fun read(offset: Int): Row? {
-        return disk.read(offset)
+    override fun read(id: Int): Row? {
+        return disk.read(id)
+    }
+
+    override fun readSequentially(sequence: Int): Row? {
+        return disk.readSequentially(sequence)
     }
 
     override fun currentSize(): Int {

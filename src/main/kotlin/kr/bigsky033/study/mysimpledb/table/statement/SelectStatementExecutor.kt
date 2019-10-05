@@ -10,19 +10,35 @@ class SelectStatementExecutor(
 
     override fun execute() {
         if (statement !is SelectStatement) throw IllegalArgumentException("input statement is not select statement")
+        val content = statement.content.trim()
+        if (content.contains("select") || content.isBlank()) {
+            throw IllegalArgumentException("please check your input. current input: $content")
+        }
 
-        var row: Row?
-        if (cursor.hasNext()) {
-            row = cursor.next()
+        if (content == "*") {
+            var row: Row?
+            if (cursor.hasNext()) {
+                row = cursor.next()
+            } else {
+                println("empty")
+                return
+            }
+
+            while (row != null) {
+                println(row)
+                row = cursor.next()
+            }
         } else {
-            println("empty")
-            return
+            val id = content.toInt()
+
+            val row = cursor.get(id)
+            if (row != null) {
+                println(row)
+            } else {
+                println("not found")
+            }
         }
 
-        while (row != null) {
-            println(row)
-            row = cursor.next()
-        }
     }
 
 }
